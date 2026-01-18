@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hotel Ravi Palace – Smart Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root{
+  --primary:#0a3d62;
+  --accent:#27ae60;
+  --warn:#e67e22;
+  --bg:#f4f6f8;
+}
+body{margin:0;font-family:Segoe UI,Arial;background:var(--bg)}
+.app{max-width:420px;margin:auto;height:100vh;display:flex;flex-direction:column;background:#fff}
+.header{background:linear-gradient(135deg,#0a3d62,#164f7f);color:#fff;padding:12px;display:flex;gap:10px;align-items:center}
+.header img{height:40px;border-radius:8px;background:#fff}
+.content{flex:1;padding:16px;overflow-y:auto}
+.card{background:#fff;padding:16px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.08);margin-bottom:16px}
+h3{margin:0 0 10px;color:#0a3d62}
+label{font-size:13px;margin-top:8px;display:block}
+input,select{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #ccc}
+.actions{display:flex;gap:10px;margin-top:14px}
+button{flex:1;padding:12px;border:none;border-radius:10px;font-size:15px;cursor:pointer}
+.green{background:var(--accent);color:#fff}
+.orange{background:var(--warn);color:#fff}
+.primary{background:var(--primary);color:#fff}
+.reset{background:#c0392b;color:#fff}
+small{color:#666}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <div class="header">
+    <img src="logo.png">
+    <div><b>Hotel Ravi Palace</b><br><small>Near Taj Mahal, Agra</small></div>
+  </div>
+
+  <div class="content" id="app"></div>
+</div>
+
+<script>
+const WHATSAPP = "917409649313"; // CHANGE
+
+let booking = {
+  adults:2,
+  children:0,
+  history:[]
+};
+
+function today(){
+  return new Date().toISOString().split("T")[0];
+}
+function tomorrow(){
+  let d=new Date(); d.setDate(d.getDate()+1);
+  return d.toISOString().split("T")[0];
+}
+
+const app = document.getElementById("app");
+
+/* STEP 1 – DATES */
+function stepDates(){
+  app.innerHTML = `
+    <div class="card">
+      <h3>Select Dates</h3>
+      <label>Check-in</label>
+      <input type="date" id="checkin" value="${today()}">
+      <label>Check-out</label>
+      <input type="date" id="checkout" value="${tomorrow()}">
+      <div class="actions">
+        <button class="green" onclick="stepGuests()">Next</button>
+      </div>
+    </div>
+  `;
+}
+
+/* STEP 2 – GUESTS */
+function stepGuests(){
+  booking.checkin = checkin.value;
+  booking.checkout = checkout.value;
+
+  app.innerHTML = `
+    <div class="card">
+      <h3>Guests</h3>
+      <label>Adults</label>
+      <select id="adults">
+        <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option>
+      </select>
+      <label>Children</label>
+      <select id="children">
+        <option selected>0</option><option>1</option><option>2</option><option>3</option>
+      </select>
+      <div class="actions">
+        <button class="primary" onclick="stepDates()">Back</button>
+        <button class="green" onclick="stepRooms()">Next</button>
+      </div>
+    </div>
+  `;
+}
+
+/* STEP 3 – ROOMS */
+function stepRooms(){
+  booking.adults = adults.value;
+  booking.children = children.value;
+
+  app.innerHTML = `
+    <div class="card">
+      <h3>Select Room</h3>
+      <button class="primary" onclick="selectRoom('Classic Room',700,2000)">Classic Room</button><br><br>
+      <button class="primary" onclick="selectRoom('Family Triple Suite',1200,3000)">Family Triple Suite</button><br><br>
+      <button class="primary" onclick="selectRoom('Presidential Family Suite',1800,3500)">Presidential Family Suite</button>
+      <div class="actions">
+        <button class="primary" onclick="stepGuests()">Back</button>
+      </div>
+    </div>
+  `;
+}
+
+/* PRICE LOGIC */
+function selectRoom(name,min,max){
+  booking.room = name;
+  booking.min = min;
+  booking.price = min + Math.round((max-min)*0.75);
+  booking.history = ["₹"+booking.price];
+  showPrice();
+}
+
+function showPrice(){
+  app.innerHTML = `
+    <div class="card">
+      <h3>${booking.room}</h3>
+      <p>Best available price: <b>₹${booking.price}</b> / night</p>
+      <div class="actions">
+        <button class="green" onclick="confirm()">Confirm</button>
+        <button class="orange" onclick="offer()">Price looks high</button>
+      </div>
+    </div>
+  `;
+}
+
+function offer(){
+  booking.price = Math.round(booking.price * 0.92);
+  booking.history.push("₹"+booking.price);
+
+  app.innerHTML = `
+    <div class="card">
+      <h3>Special Offer 🎯</h3>
+      <p>Your special price: <b>₹${booking.price}</b></p>
+      <small>Limited rooms available</small>
+      <div class="actions">
+        <button class="green" onclick="confirm()">Confirm Offer</button>
+        <button class="orange" onclick="askOffer()">Still want lower</button>
+      </div>
+    </div>
+  `;
+}
+
+function askOffer(){
+  booking.offer = booking.price;
+
+  app.innerHTML = `
+    <div class="card">
+      <h3>Your Offer</h3>
+      <input type="range" min="700" max="${booking.price}" step="100"
+        value="${booking.price}"
+        oninput="offerVal.innerText=this.value; booking.offer=parseInt(this.value)">
+      <p>Your offer: <b>₹<span id="offerVal">${booking.price}</span></b></p>
+      <div class="actions">
+        <button class="green" onclick="submitOffer()">Submit</button>
+        <button class="reset" onclick="stepDates()">Reset</button>
+      </div>
+    </div>
+  `;
+}
+
+function submitOffer(){
+  booking.history.push("₹"+booking.offer);
+
+  if(booking.offer < booking.min){
+    approval();
+    return;
+  }
+  booking.price = booking.offer;
+  confirm();
+}
+
+function approval(){
+  app.innerHTML = `
+    <div class="card">
+      <h3>Price Approval Required</h3>
+      <p style="color:#e67e22">
+        You selected a price lower than our minimum.<br>
+        Hotel will confirm and inform you shortly.
+      </p>
+      <input placeholder="Your Name" id="name">
+      <input placeholder="Mobile Number" id="mobile">
+      <div class="actions">
+        <button class="green" onclick="send()">Continue</button>
+      </div>
+    </div>
+  `;
+}
+
+function confirm(){
+  app.innerHTML = `
+    <div class="card">
+      <h3>Booking Summary</h3>
+      <p>
+        ${booking.room}<br>
+        Price: <b>₹${booking.price}</b>
+      </p>
+      <div class="actions">
+        <button class="green" onclick="send()">Confirm Booking</button>
+        <button class="reset" onclick="stepDates()">Reset</button>
+      </div>
+    </div>
+  `;
+}
+
+function send(){
+  const msg = `Hotel Ravi Palace Booking
+Room: ${booking.room}
+Dates: ${booking.checkin} to ${booking.checkout}
+Guests: ${booking.adults} Adults, ${booking.children} Children
+Final Price: ₹${booking.price}
+
+Price Attempts:
+${booking.history.join(" → ")}`;
+
+  location.href = "https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg);
+}
+
+/* START */
+stepDates();
+</script>
+</body>
+</html>
