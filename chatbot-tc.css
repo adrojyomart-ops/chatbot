@@ -1,0 +1,26 @@
+<style>
+#tcPopup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+#tcBox{
+  background:#141414;
+  color:#fff;
+  padding:25px;
+  max-width:400px;
+  border-radius:10px;
+  text-align:center;
+}
+#tcBox button{
+  background:#d4af37;
+  border:none;
+  padding:10px 20px;
+  cursor:pointer;
+  margin-top:15px;
+}
+</style>

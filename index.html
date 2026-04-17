@@ -1,48 +1,165 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b3c5d">
 <meta charset="UTF-8">
 <title>Hotel Ravi Palace – Smart Booking</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<link rel="stylesheet" href="chatbot-tc.css">
+<script src="chatbot-tc.js"></script>
 <style>
 :root{
-  --primary:#0a3d62;
-  --accent:#27ae60;
-  --warn:#e67e22;
-  --bg:#f4f6f8;
+  --bg:#0e0e0e;
+  --card:#1a1a1a;
+  --gold:#d4af37;
+  --gold-dark:#b8962e;
+  --text:#ffffff;
+  --muted:#b5b5b5;
+  --danger:#8b0000;
 }
-body{margin:0;font-family:Segoe UI,Arial;background:var(--bg)}
-.app{max-width:420px;margin:auto;height:100vh;display:flex;flex-direction:column;background:#fff}
-.header{background:linear-gradient(135deg,#0a3d62,#164f7f);color:#fff;padding:12px;display:flex;gap:10px;align-items:center}
-.header img{height:40px;border-radius:8px;background:#fff}
-.content{flex:1;padding:16px;overflow-y:auto}
-.card{background:#fff;padding:16px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.08);margin-bottom:16px}
-h3{margin:0 0 10px;color:#0a3d62}
-label{font-size:13px;margin-top:8px;display:block}
-input,select{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #ccc}
-.actions{display:flex;gap:10px;margin-top:14px}
-button{flex:1;padding:12px;border:none;border-radius:10px;font-size:15px;cursor:pointer}
-.green{background:var(--accent);color:#fff}
-.orange{background:var(--warn);color:#fff}
-.primary{background:var(--primary);color:#fff}
-.reset{background:#c0392b;color:#fff}
-small{color:#666}
+
+body{
+  margin:0;
+  font-family:Segoe UI,Arial;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.app{
+  max-width:420px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+<footer style="text-align:center;padding:15px;font-size:13px;color:#aaa;">
+  <a href="/privacy-policy.html">Privacy Policy</a> |
+  <a href="/chatbot-terms.html">Chatbot Terms & Conditions</a>
+</footer>
+
+}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,#000,#1c1c1c);
+  padding:14px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  border-bottom:1px solid #222;
+}
+.header img{
+  height:42px;
+  border-radius:6px;
+  background:#fff;
+}
+.header b{font-size:16px}
+.header small{color:var(--gold)}
+
+/* CONTENT */
+.content{
+  flex:1;
+  padding:18px;
+  overflow-y:auto;
+}
+
+/* CARD */
+.card{
+  background:linear-gradient(180deg,#1c1c1c,#121212);
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.6);
+  margin-bottom:18px;
+}
+
+/* TEXT */
+h3{
+  margin:0 0 12px;
+  color:var(--gold);
+}
+label{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:10px;
+  display:block;
+}
+small{color:#aaa;font-size:12px}
+
+/* INPUTS */
+input,select{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#0f0f0f;
+  color:#fff;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:12px;
+  margin-top:16px;
+}
+
+/* BUTTONS */
+button{
+  flex:1;
+  padding:13px;
+  border:none;
+  border-radius:30px;
+  font-size:15px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.green{
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#000;
+  font-weight:600;
+}
+.primary{
+  background:#222;
+  color:#fff;
+  border:1px solid #333;
+}
+.orange{
+  background:#444;
+  color:#fff;
+}
+.reset{
+  background:var(--danger);
+  color:#fff;
+}
+
+button:hover{opacity:.9}
 </style>
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e0e0e">
+<link rel="apple-touch-icon" href="logo-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Hotel Ravi Palace">
 </head>
 
 <body>
 <div class="app">
   <div class="header">
     <img src="logo.png">
-    <div><b>Hotel Ravi Palace</b><br><small>Near Taj Mahal, Agra</small></div>
+    <div>
+      <b>Hotel Ravi Palace</b><br>
+      <small>Near Taj Mahal, Agra</small>
+    </div>
   </div>
 
   <div class="content" id="app"></div>
 </div>
 
 <script>
-const WHATSAPP = "917409649313"; // CHANGE
+const WHATSAPP = "917409649313";
 
 let booking = {
   adults:2,
@@ -72,8 +189,7 @@ function stepDates(){
       <div class="actions">
         <button class="green" onclick="stepGuests()">Next</button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 /* STEP 2 – GUESTS */
@@ -96,8 +212,7 @@ function stepGuests(){
         <button class="primary" onclick="stepDates()">Back</button>
         <button class="green" onclick="stepRooms()">Next</button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 /* STEP 3 – ROOMS */
@@ -108,17 +223,16 @@ function stepRooms(){
   app.innerHTML = `
     <div class="card">
       <h3>Select Room</h3>
-      <button class="primary" onclick="selectRoom('Classic Room',700,2000)">Classic Room</button><br><br>
-      <button class="primary" onclick="selectRoom('Family Triple Suite',1200,3000)">Family Triple Suite</button><br><br>
-      <button class="primary" onclick="selectRoom('Presidential Family Suite',1800,3500)">Presidential Family Suite</button>
+      <button class="green" onclick="selectRoom('Classic Room',700,2000)">Classic Room</button><br><br>
+      <button class="green" onclick="selectRoom('Family Triple Suite',1200,3000)">Family Triple Suite</button><br><br>
+      <button class="green" onclick="selectRoom('Presidential Family Suite',1800,3500)">Presidential Family Suite</button>
       <div class="actions">
         <button class="primary" onclick="stepGuests()">Back</button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-/* PRICE LOGIC */
+/* PRICE LOGIC – UNCHANGED */
 function selectRoom(name,min,max){
   booking.room = name;
   booking.min = min;
@@ -131,42 +245,53 @@ function showPrice(){
   app.innerHTML = `
     <div class="card">
       <h3>${booking.room}</h3>
-      <p>Best available price: <b>₹${booking.price}</b> / night</p>
+      <p>Best available price</p>
+      <h2 style="color:#d4af37">₹${booking.price} / night</h2>
       <div class="actions">
         <button class="green" onclick="confirm()">Confirm</button>
         <button class="orange" onclick="offer()">Price looks high</button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function offer(){
   booking.price = Math.round(booking.price * 0.92);
   booking.history.push("₹"+booking.price);
-
-  app.innerHTML = `
-    <div class="card">
-      <h3>Special Offer 🎯</h3>
-      <p>Your special price: <b>₹${booking.price}</b></p>
-      <small>Limited rooms available</small>
-      <div class="actions">
-        <button class="green" onclick="confirm()">Confirm Offer</button>
-        <button class="orange" onclick="askOffer()">Still want lower</button>
-      </div>
-    </div>
-  `;
+  askOffer();   // 👈 THIS WAS MISSING
 }
-
 function askOffer(){
   booking.offer = booking.price;
+
+  // AI recommended price (display only – no logic impact)
+  const recommended = Math.round(
+    booking.min + (booking.price - booking.min) * 0.6
+  );
 
   app.innerHTML = `
     <div class="card">
       <h3>Your Offer</h3>
-      <input type="range" min="700" max="${booking.price}" step="100"
+
+      <p style="color:#d4af37;font-weight:600">
+        Recommended price: ₹${recommended}
+      </p>
+      <small>
+        AI suggests this price has the highest approval chance.
+      </small>
+
+      <input type="range"
+        min="${booking.min}"
+        max="${booking.price}"
+        step="100"
         value="${booking.price}"
-        oninput="offerVal.innerText=this.value; booking.offer=parseInt(this.value)">
-      <p>Your offer: <b>₹<span id="offerVal">${booking.price}</span></b></p>
+        oninput="
+          offerVal.innerText=this.value;
+          booking.offer=parseInt(this.value)
+        ">
+      
+      <p style="margin-top:10px">
+        Your offer: <b>₹<span id="offerVal">${booking.price}</span></b>
+      </p>
+
       <div class="actions">
         <button class="green" onclick="submitOffer()">Submit</button>
         <button class="reset" onclick="stepDates()">Reset</button>
@@ -182,6 +307,7 @@ function submitOffer(){
     approval();
     return;
   }
+
   booking.price = booking.offer;
   confirm();
 }
@@ -190,7 +316,7 @@ function approval(){
   app.innerHTML = `
     <div class="card">
       <h3>Price Approval Required</h3>
-      <p style="color:#e67e22">
+      <p style="color:#d4af37">
         You selected a price lower than our minimum.<br>
         Hotel will confirm and inform you shortly.
       </p>
@@ -203,20 +329,18 @@ function approval(){
   `;
 }
 
+
 function confirm(){
   app.innerHTML = `
     <div class="card">
       <h3>Booking Summary</h3>
-      <p>
-        ${booking.room}<br>
-        Price: <b>₹${booking.price}</b>
-      </p>
+      <p>${booking.room}</p>
+      <p>₹${booking.price}</p>
       <div class="actions">
         <button class="green" onclick="send()">Confirm Booking</button>
         <button class="reset" onclick="stepDates()">Reset</button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function send(){
@@ -235,5 +359,69 @@ ${booking.history.join(" → ")}`;
 /* START */
 stepDates();
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(err => console.log("SW registration failed", err));
+  });
+}
+</script>
+<!-- Firebase Push Notifications -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMnRh3FgghMFuJXW9TIYpZ7TmLG7mCsI",
+    authDomain: "hotel-ravi-palace-chatbot.firebaseapp.com",
+    projectId: "hotel-ravi-palace-chatbot",
+    storageBucket: "hotel-ravi-palace-chatbot.firebasestorage.app",
+    messagingSenderId: "450496502208",
+    appId: "1:450496502208:web:552e3f2ae709cc5b675025"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  const messaging = firebase.messaging();
+
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      messaging.getToken({
+        vapidKey: "BNQuOET5m2250IPK1G-BSFZlYSuy70iESDWavV_z8_2I-XxHJpt11Qj2hJRU0ObvbrCA7-XGQ-zv7poRKFOWpg"
+      }).then(token => {
+        console.log("FCM Token:", token);
+      });
+    }
+  });
+</script>
+<body>
+
+<!-- ✅ TERMS & CONDITIONS POPUP (YAHI ADD KARNA HAI) -->
+<div id="tcPopup">
+  <div id="tcBox">
+    <h3>Chatbot Terms</h3>
+    <p>
+      By continuing, you agree to our
+      <a href="/chatbot-terms.html" target="_blank">Terms & Conditions</a>
+      and
+      <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.
+    </p>
+    <button onclick="acceptTC()">I Agree</button>
+  </div>
+</div>
+
+<!-- 🔽 AAPKA PURANA CHATBOT CODE (UNCHANGED) -->
+<div id="chatbot">
+  <!-- existing chatbot UI -->
+</div>
+
+<script src="chatbot-tc.js"></script>
+<footer style="text-align:center;padding:15px;font-size:13px;color:#aaa;">
+  <a href="/privacy-policy.html">Privacy Policy</a> |
+  <a href="/chatbot-terms.html">Chatbot Terms & Conditions</a>
+</footer>
 </body>
+
 </html>

@@ -1,0 +1,17 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyAMnRh3FgghMFuJXW9TIYpZT7TmLG7mCsI",
+    authDomain: "hotel-ravi-palace-chatbot.firebaseapp.com",
+    projectId: "hotel-ravi-palace-chatbot",
+    storageBucket: "hotel-ravi-palace-chatbot.firebasestorage.app",
+    messagingSenderId: "450496502208",
+    appId: "1:450496502208:web:552e3f2ae709cc5b675025",
+    measurementId: "G-Y4NTXN142D"
+  };
+
+BNQuOET5m2250IPk1G-BSFZIYSYuy70iESDWavV_z8_2I-XxHJpt11Qj2hJRUo0bvbrcA7-XGQ-zv7poRKF0Wpg
+
+appId: "1:450496502208:web:552e3f2ae709cc5b675025"
+
+apiKey: "AIzaSyAMnRh3FgghMFuJXW9TIYpZ7TmLG7mCsI"
+
+https://console.firebase.google.com/project/hotel-ravi-palace-chatbot/notification/compose
